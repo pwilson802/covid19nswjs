@@ -8,14 +8,6 @@ import SearchAppBar from "./components/SearchAppBar"
 import Box from '@mui/material/Box';
 
 
-async function getPostCode() {
-  const url = `https://data.nsw.gov.au/data/api/3/action/datastore_search_sql?sql=SELECT * from "5d63b527-e2b8-4c42-ad6f-677f14433520" WHERE postcode='2170'`;
-  const response = await fetchRetry(url, 3);
-  const json = await response.json();
-  return json.result.records
-}
-
-
 export default function Home({postcodes, latest}) {
   
   return (
@@ -40,6 +32,7 @@ export default function Home({postcodes, latest}) {
         <Box sx={{fontSize: "0.6rem", marginBottom: "3rem", textAlign: "center"}}>The data on this site is gathered from NSW Data. It is not associated with NSW Health. This is displayed for interest purposes only and should not replace current health advice. The numbers displayed are confirmed cases only and may not reflect the current infection rate in your area.</Box>
         <PostcodeCardHeading />
         {
+          latest && (
             postcodes.map((item) => {
             return (
 
@@ -47,6 +40,7 @@ export default function Home({postcodes, latest}) {
 
             ) }
             )
+        )
         }
       </Box>
 
