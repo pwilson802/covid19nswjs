@@ -36,11 +36,21 @@ export async function getStaticProps() {
 
 
 export async function getStaticPaths() {
+    let postcodes = range(2000, 2999)
+    let paths = postcodes.map((item) => {
+        return { params: { postcode: String(item) } }
+    })
   return {
-    paths: [
-          { params: { postcode: "2219" } },
-          { params: { postcode: "2218" } },
-    ],
+    paths: paths,
     fallback: true // false or 'blocking'
   };
+}
+
+
+function range(start, end) {
+    var ans = [];
+    for (let i = start; i <= end; i++) {
+        ans.push(i);
+    }
+    return ans;
 }
