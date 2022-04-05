@@ -3,7 +3,7 @@ import PostcodeCard from "../components/PostcodeCard"
 import PostcodeCardHeading from "../components/PostcodeCardHeading"
 import {GetSiteData} from "../../modules/FetchData"
 import { useRouter } from 'next/router'
-import { Latest } from "../components/Latest"
+import Latest from "../components/Latest"
 import { useState, useEffect } from "react"
 import Box from '@mui/material/Box';
 
