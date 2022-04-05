@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Head from 'next/head'
 
 
-export function Latest({latest}) {
+export default function Latest({latest}) {
     return (
     <div >
       <Box sx={{ paddingLeft: "1rem", paddingRight: "1rem", justifyContent: "center", alignItems:'center', display: "flex", flexDirection: "column" }} >
