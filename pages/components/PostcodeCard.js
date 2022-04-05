@@ -25,7 +25,7 @@ function PostcodeCard({ suburbs, postcode, all, day, week }) {
                         {postcode}
                     </Grid>                   
                     <Grid item xs={12}>
-                        {suburbs.join(", ")}
+                        {suburbs && suburbs.join(", ")}
                     </Grid>
                 </Grid>
             <Grid item xs={2}>
