@@ -1,6 +1,6 @@
 import SearchAppBar from "../components/SearchAppBar"
 import PostcodeCard from "../components/PostcodeCard"
-import {GetSiteData} from "../components/FetchData"
+import {GetSiteData} from "../../modules/FetchData"
 import { useRouter } from 'next/router'
 
 

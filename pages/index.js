@@ -6,7 +6,7 @@ import PostcodeCard from "./components/PostcodeCard"
 import PostcodeCardHeading from "./components/PostcodeCardHeading"
 import SearchAppBar from "./components/SearchAppBar"
 import Box from '@mui/material/Box';
-import {GetSiteData} from "./components/FetchData"
+import {GetSiteData} from "../modules/FetchData"
 
 
 export default function Home({postcodes, latest}) {
