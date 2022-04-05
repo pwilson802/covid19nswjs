@@ -59,8 +59,6 @@ function getPostcode(postcode, data) {
     .map(item => Number(item.confirmed_cases_count))
   let lastWeekCount = countNumbers(lastWeek)
   let suburbs = postcodeNames.filter((item) => item.postcode == postcode).map(item => item.suburb)
-  console.log("postcode", postcode)
-  console.log("all", allCount)
   return {
     postcode: postcode,
     day: lastDayCount,
