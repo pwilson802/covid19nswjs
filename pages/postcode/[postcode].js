@@ -64,7 +64,6 @@ async function getClosePostcodes(postcode){
     let result = []
     for (let option of validOptions) {
         let all = await getPostCodeData(option)
-        console.log("all", all)
         if (all.length == 0){
             continue
         }
@@ -129,7 +128,7 @@ export default function Home() {
                                     marginRight: "1rem"
                     }}>{postcodeDetails.postcode}</Box>
                         <Box sx={{
-                                    color: "#344072",
+                                    color: "#8086a0",
                                     fontSize: "1.5rem",
                     }}>{postcodeDetails.suburbs && postcodeDetails.suburbs.join(", ")}</Box>
                     </Box>

@@ -15,10 +15,7 @@ function PostcodeCardHeading() {
       },
         }}>
             <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} sx={{ paddingBottom: "0.5rem", color: "black", fontWeight: "bold",}}>
-                <Grid item xs={6}
-                    sx={{
-                        fontSize: "1.5rem",
-                }} >
+                <Grid item xs={6}>
                 Postcode
             </Grid>
             <Grid item xs={2}>
