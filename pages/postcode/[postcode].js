@@ -121,7 +121,7 @@ export default function Home() {
                     display: "flex",
                     flexDirection: "column",
                 }} >
-                    <Box sx={{ paddingLeft: "1rem", paddingRight: "1rem", justifyContent: "center", alignItems: 'center', display: "flex", marginBottom: "1rem" }}>
+                    <Box sx={{ paddingLeft: "1rem", paddingRight: "1rem", justifyContent: "center", alignItems: 'center', display: "flex", marginBottom: "1rem", flexDirection: "column" }}>
                         <Box sx={{
                                     color: "#344072",
                                     fontWeight: "bold",
@@ -175,7 +175,7 @@ export default function Home() {
                                     fontSize: "2rem",
                                     marginTop: "3rem",
                                     marginBottom: "1rem"
-                    }}>Close Postcodes </Box>
+                    }}>Close Suburbs </Box>
                     <PostcodeCardHeading />
                 </Box>
                 )        
