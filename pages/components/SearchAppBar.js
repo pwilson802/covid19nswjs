@@ -20,10 +20,12 @@ const Search = styled('div')(({ theme }) => ({
   },
   marginLeft: 0,
   width: '100%',
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(1),
-    width: 'auto',
-  },
+  marginLeft: theme.spacing(1),
+  width: 'auto',
+  // [theme.breakpoints.up('sm')]: {
+  //   marginLeft: theme.spacing(1),
+  //   width: 'auto',
+  // },
 }));
 
 const SearchIconWrapper = styled('div')(({ theme }) => ({
@@ -70,17 +72,17 @@ export default function SearchAppBar() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-                    <Typography
+          <Typography
             variant="h6"
             noWrap
             component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+            sx={{ flexGrow: 1, display: { xs: '4', sm: 'block' } }}
           >
           <a href={"/"}>
-            Covid-19 NSW Cases
+            Covid-19 NSW
           </a>
           </Typography>
-          <Search>
+          <Search  >
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
