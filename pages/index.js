@@ -63,6 +63,7 @@ export async function getStaticProps() {
       postcodes,
       latest,
     },
+    revalidate: 1800,
   };
 }
 
