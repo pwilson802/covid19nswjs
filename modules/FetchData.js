@@ -72,7 +72,7 @@ function getAllPostcodes(data){
   let postcodesAll = postcodeNames.map((item) => item.postcode)
   let postcodes = Array.from(new Set(postcodesAll));
   // Filter to remove a lot of postcodes for testing
-  postcodes = postcodes.slice(100,150)
+  // postcodes = postcodes.slice(100,150)
   let result = postcodes.map((postcode) => {
     return getPostcode(postcode, data)
   })
