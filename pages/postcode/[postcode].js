@@ -56,13 +56,23 @@ function getPostcodeDetails(postcode, data) {
   }
 }
 
-function getClosePostcodes(postcode){
+async function getClosePostcodes(postcode){
     let p = Number(postcode)
     let options = [p+1,p+2,p-1,p-2]
-    console.log(options)
     let validPostcodes = range(2000,2999).map((item) => item)
     let validOptions = options.filter((item) => validPostcodes.includes(item))
-    return validOptions 
+    let result = []
+    for (let option of validOptions) {
+        let all = await getPostCodeData(option)
+        console.log("all", all)
+        if (all.length == 0){
+            continue
+        }
+        let details = getPostcodeDetails(option, all)
+        result.push(details)
+    }
+    return result
+
 }
 
 
@@ -72,21 +82,29 @@ export default function Home() {
     const [postcodeDetails, setPostCodeDetails] = useState({})
     const [latest, setLatest] = useState("")
     const [valid, setValid] = useState(true)
-    const [closePostcodes, setClosePostcodes] = useState([])
+    const [closePostcodeDetails, setClosePostcodeDetails] = useState([])
     // get if the post code is valid or not, if not display a page that it can't be found
 
     useEffect(() => {
         async function getPostcode() {
             const postcode = window.location.href.split('/').pop();
+            let validPostcodes = range(2000, 2999).map((item) => item)
+            if (!validPostcodes.includes(Number(postcode))) {
+                setValid(false)
+                return
+            }
             let all = await getPostCodeData(postcode)
+            if (all.length == 0){
+            setValid(false)
+            return
+            }
             setPostcodeAll(all)
             let latest = getLatest(all)
             setLatest(latest.toString().split(" ").slice(1, 4).join(" "))
             let details = getPostcodeDetails(postcode, all)
             setPostCodeDetails(details)
-            let closePostcodesFound = getClosePostcodes(postcode)
-            setClosePostcodes(closePostcodesFound)
-            console.log(closePostcodesFound)
+            let closePostcodesFound = await getClosePostcodes(postcode)
+            setClosePostcodeDetails(closePostcodesFound)
         }
         getPostcode()
     }, [])
@@ -94,7 +112,7 @@ export default function Home() {
         <>
             <SearchAppBar sx={{ width: "100%", margin: 0 }} />
             {latest && <Latest latest={latest} />}
-            {postcodeDetails &&
+            {postcodeDetails.suburbs && valid &&
                 <Box sx={{
                     paddingLeft: "1rem",
                     paddingRight: "1rem",
@@ -147,17 +165,29 @@ export default function Home() {
                     </Grid>
                 </Grid>
             </Box>
-
-                <Box sx={{
+            </Box>
+            }
+            { postcodeDetails.suburbs && closePostcodeDetails && valid && (
+                <Box sx={{ paddingLeft: "1rem", paddingRight: "1rem", justifyContent: "center", alignItems: 'center', display: "flex", flexDirection: "column" }} >
+                    <Box sx={{
                                     color: "#344072",
                                     fontWeight: "bold",
                                     fontSize: "2rem",
-                                    marginTop: "3rem"
+                                    marginTop: "3rem",
+                                    marginBottom: "1rem"
                     }}>Close Postcodes </Box>
-            </Box>
+                    <PostcodeCardHeading />
+                </Box>
+                )        
             }
-            <div></div>
-        
+            <Box sx={{ paddingLeft: "1rem", paddingRight: "1rem", justifyContent: "center", alignItems: 'center', display: "flex", flexDirection: "column" }} >
+            {postcodeDetails.suburbs && closePostcodeDetails && valid && (
+                closePostcodeDetails.map((item) => {
+                    return <PostcodeCard key={item.postcode} suburbs={item.suburbs} postcode={item.postcode} all={item.all} day={item.day} week={item.week}/>
+                })
+            )
+            }
+        </Box>
         </>
     )
 }

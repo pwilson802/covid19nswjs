@@ -76,7 +76,7 @@ export default function SearchAppBar() {
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
           >
-          <a href={"https://covid19nsw.com"}>
+          <a href={"/"}>
             Covid-19 NSW Cases
           </a>
           </Typography>

@@ -56,7 +56,6 @@ export async function getStaticProps() {
   let data = await GetSiteData()
   let postcodes = data.postcodes
   let latest = data.latest
-  console.log(data)
 
   return {
     props: {
