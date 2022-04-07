@@ -78,7 +78,6 @@ export async function getStaticProps() {
     props: {
       postcodes,
       latest,
-    },
-    revalidate: 1800,
+    }
   };
 }
