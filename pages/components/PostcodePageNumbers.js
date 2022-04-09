@@ -82,7 +82,10 @@ function PostcodePageNumbers({ all, week, day }) {
             justifyContent: "center",
             alignItems: "center",
             display: "flex",
-            fontSize: "2rem",
+            fontSize: "1rem",
+            "@media(min-width: 768px)": {
+              fontSize: "2rem",
+            },
           }}
         >
           {all ? all.toLocaleString("en-AU") : ""}
@@ -94,7 +97,10 @@ function PostcodePageNumbers({ all, week, day }) {
             justifyContent: "center",
             alignItems: "center",
             display: "flex",
-            fontSize: "2rem",
+            fontSize: "1rem",
+            "@media(min-width: 768px)": {
+              fontSize: "2rem",
+            },
           }}
         >
           {week ? week.toLocaleString("en-AU") : ""}
@@ -106,7 +112,10 @@ function PostcodePageNumbers({ all, week, day }) {
             justifyContent: "center",
             alignItems: "center",
             display: "flex",
-            fontSize: "2rem",
+            fontSize: "1rem",
+            "@media(min-width: 768px)": {
+              fontSize: "2rem",
+            },
           }}
         >
           {day ? day.toLocaleString("en-AU") : ""}
