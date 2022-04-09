@@ -29,24 +29,26 @@ export default function Home({ all, summary, latest }) {
       >
         ALL NSW
       </Box>
-      {all && (
-        <Box
-          sx={{
-            paddingLeft: "1rem",
-            paddingRight: "1rem",
-            justifyContent: "center",
-            alignItems: "center",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <PostcodePageNumbers
-            all={summary.all}
-            week={summary.week}
-            day={summary.day}
-          />
-        </Box>
-      )}
+      {summary.all &&
+        summary.week &&
+        summary.day(
+          <Box
+            sx={{
+              paddingLeft: "1rem",
+              paddingRight: "1rem",
+              justifyContent: "center",
+              alignItems: "center",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <PostcodePageNumbers
+              all={summary.all}
+              week={summary.week}
+              day={summary.day}
+            />
+          </Box>
+        )}
     </>
   );
 }
