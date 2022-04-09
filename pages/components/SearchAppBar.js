@@ -68,7 +68,7 @@ export default function SearchAppBar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ backgroundColor: "#A31D32" }}>
+      <AppBar position="static" sx={{ backgroundColor: "#A31D34" }}>
         <Toolbar>
           <Typography
             variant="h6"

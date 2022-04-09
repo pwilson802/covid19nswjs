@@ -46,7 +46,7 @@ function countNumbers(numbers) {
 function getPostcode(postcode, data) {
   let latest = getLatest(data);
   let postcodeData = [];
-  if (postcode == "allnsw") {
+  if (postcode == "All NSW") {
     postcodeData = data;
   } else {
     postcodeData = data.filter((item) => item.postcode == postcode);
@@ -101,7 +101,8 @@ export async function GetSiteData() {
   let postcodes = getAllPostcodes(allData).sort(function (a, b) {
     return a.day < b.day ? 1 : a.day > b.day ? -1 : 0;
   });
-  let all = getPostcode("allnsw", allData);
+  let all = getPostcode("All NSW", allData);
+  postcodes.unshift(all);
   let latest = getLatest(allData).toString().split(" ").slice(1, 4).join(" ");
   return {
     postcodes: postcodes,

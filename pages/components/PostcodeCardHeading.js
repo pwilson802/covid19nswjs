@@ -29,7 +29,7 @@ function PostcodeCardHeading() {
         sx={{ paddingBottom: "0.5rem", color: "white", fontWeight: "bold" }}
       >
         <Grid item xs={6}>
-          Postcode
+          Location
         </Grid>
         <Grid item xs={2}>
           All
