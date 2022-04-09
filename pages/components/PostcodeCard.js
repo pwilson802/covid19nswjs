@@ -48,13 +48,43 @@ function PostcodeCard({ suburbs, postcode, all, day, week, last }) {
           </a>
         </Grid>
 
-        <Grid item xs={2}>
+        <Grid
+          item
+          xs={2}
+          sx={{
+            color: "#4C6570",
+            fontSize: "0.8rem",
+            "@media(min-width: 768px)": {
+              fontSize: "1rem",
+            },
+          }}
+        >
           {all ? all.toLocaleString("en-AU") : ""}
         </Grid>
-        <Grid item xs={2}>
+        <Grid
+          item
+          xs={2}
+          sx={{
+            color: "#4C6570",
+            fontSize: "0.8rem",
+            "@media(min-width: 768px)": {
+              fontSize: "1rem",
+            },
+          }}
+        >
           {week ? week.toLocaleString("en-AU") : ""}
         </Grid>
-        <Grid item xs={2}>
+        <Grid
+          item
+          xs={2}
+          sx={{
+            color: "#4C6570",
+            fontSize: "0.8rem",
+            "@media(min-width: 768px)": {
+              fontSize: "1rem",
+            },
+          }}
+        >
           {day ? day.toLocaleString("en-AU") : ""}
         </Grid>
       </Grid>
