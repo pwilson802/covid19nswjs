@@ -49,13 +49,13 @@ function PostcodeCard({ suburbs, postcode, all, day, week, last }) {
         </Grid>
 
         <Grid item xs={2}>
-          {all.toLocaleString("en-AU")}
+          {all ? all.toLocaleString("en-AU") : ""}
         </Grid>
         <Grid item xs={2}>
-          {week.toLocaleString("en-AU")}
+          {week ? week.toLocaleString("en-AU") : ""}
         </Grid>
         <Grid item xs={2}>
-          {day.toLocaleString("en-AU")}
+          {day ? day.toLocaleString("en-AU") : ""}
         </Grid>
       </Grid>
       {/* <Divider light /> */}
