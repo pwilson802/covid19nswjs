@@ -1,5 +1,3 @@
-
-
 const fetchRetry = async (url, n) => {
   try {
     return await fetch(url);
@@ -12,89 +10,105 @@ const fetchRetry = async (url, n) => {
 function getYears() {
   const d = new Date();
   let year = d.getFullYear();
-  let years = []
+  let years = [];
   while (year != 2019) {
-    years.push(year)
-    year--
+    years.push(year);
+    year--;
   }
-  return years
+  return years;
 }
 
 async function getAll() {
-  let allCases = [] 
-  const years = getYears()
+  let allCases = [];
+  const years = getYears();
   for (let year of years) {
     let url = `https://data.nsw.gov.au/data/api/3/action/datastore_search_sql?sql=SELECT postcode, notification_date, confirmed_cases_count from "5d63b527-e2b8-4c42-ad6f-677f14433520" WHERE notification_date>='${year}-01-01' AND notification_date<='${year}-12-31'`;
     let response = await fetchRetry(url, 3);
     let json = await response.json();
-    let data = json.result.records
-    allCases = [...allCases, ...data]
+    let data = json.result.records;
+    allCases = [...allCases, ...data];
   }
   let allCasesDates = allCases.map((item) => {
-    item.notification_date = new Date(item.notification_date)
-    return item
-  })
-  return allCasesDates
+    item.notification_date = new Date(item.notification_date);
+    return item;
+  });
+  return allCasesDates;
 }
 
-
 function countNumbers(numbers) {
-  let count = 0
+  let count = 0;
   for (let n of numbers) {
-    count = count + n
+    count = count + n;
   }
-  return count
+  return count;
 }
 
 function getPostcode(postcode, data) {
-  let latest = getLatest(data)
-  let postcodeData = data.filter((item) => item.postcode == postcode)
-  let all = postcodeData.map(item => Number(item.confirmed_cases_count))
-  let allCount = countNumbers(all)
-  let lastDay = postcodeData.filter((item) => item.notification_date.getTime() == latest.getTime())
-    .map(item => Number(item.confirmed_cases_count))
-  let lastDayCount = countNumbers(lastDay)
-  let dateAWeekAgo = latest.getTime() - 6.048e+8
-  let lastWeek = postcodeData.filter((item) => item.notification_date.getTime() > dateAWeekAgo)
-    .map(item => Number(item.confirmed_cases_count))
-  let lastWeekCount = countNumbers(lastWeek)
-  let suburbs = postcodeNames.filter((item) => item.postcode == postcode).map(item => item.suburb)
+  let latest = getLatest(data);
+  let postcodeData = [];
+  if (postcode == "allnsw") {
+    postcodeData = data;
+  } else {
+    postcodeData = data.filter((item) => item.postcode == postcode);
+  }
+  let all = postcodeData.map((item) => Number(item.confirmed_cases_count));
+  let allCount = countNumbers(all);
+  let lastDay = postcodeData
+    .filter((item) => item.notification_date.getTime() == latest.getTime())
+    .map((item) => Number(item.confirmed_cases_count));
+  let lastDayCount = countNumbers(lastDay);
+  let dateAWeekAgo = latest.getTime() - 6.048e8;
+  let lastWeek = postcodeData
+    .filter((item) => item.notification_date.getTime() > dateAWeekAgo)
+    .map((item) => Number(item.confirmed_cases_count));
+  let lastWeekCount = countNumbers(lastWeek);
+  let suburbs = postcodeNames
+    .filter((item) => item.postcode == postcode)
+    .map((item) => item.suburb);
   return {
     postcode: postcode,
     day: lastDayCount,
     all: allCount,
     week: lastWeekCount,
-    suburbs: suburbs
-  }
+    suburbs: suburbs,
+  };
 }
 
-function getAllPostcodes(data){
-  let postcodesAll = postcodeNames.map((item) => item.postcode)
+function getAllPostcodes(data) {
+  let postcodesAll = postcodeNames.map((item) => item.postcode);
   let postcodes = Array.from(new Set(postcodesAll));
   // Filter to remove a lot of postcodes for testingg
   // postcodes = postcodes.slice(100,150)
   let result = postcodes.map((postcode) => {
-    return getPostcode(postcode, data)
-  })
-  return result
-
+    return getPostcode(postcode, data);
+  });
+  return result;
 }
 
-function getLatest(postcodeData){
-  let sortDate = postcodeData.sort(function (a, b) { return a.notification_date < b.notification_date ? 1 : a.notification_date > b.notification_date ? -1 : 0 });
-  return sortDate[1].notification_date
+function getLatest(postcodeData) {
+  let sortDate = postcodeData.sort(function (a, b) {
+    return a.notification_date < b.notification_date
+      ? 1
+      : a.notification_date > b.notification_date
+      ? -1
+      : 0;
+  });
+  return sortDate[1].notification_date;
 }
 
 export async function GetSiteData() {
-    let allData = await getAll()
-    let postcodes = getAllPostcodes(allData).sort(function (a, b) {return a.day < b.day ? 1 : a.day > b.day ? -1 : 0  })
-    let latest = getLatest(allData).toString().split(" ").slice(1, 4).join(" ")
-    return {
-        "postcodes": postcodes,
-        "latest": latest,
-    }
+  let allData = await getAll();
+  let postcodes = getAllPostcodes(allData).sort(function (a, b) {
+    return a.day < b.day ? 1 : a.day > b.day ? -1 : 0;
+  });
+  let all = getPostcode("allnsw", allData);
+  let latest = getLatest(allData).toString().split(" ").slice(1, 4).join(" ");
+  return {
+    postcodes: postcodes,
+    latest: latest,
+    all: all,
+  };
 }
-
 
 let postcodeNames = [
   {
@@ -19574,4 +19588,3 @@ let postcodeNames = [
     suburb: "Moncrieff",
   },
 ];
-  

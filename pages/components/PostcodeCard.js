@@ -1,15 +1,19 @@
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
-import { fontWeight } from "@mui/system";
 
-function PostcodeCard({ suburbs, postcode, all, day, week }) {
+function PostcodeCard({ suburbs, postcode, all, day, week, last }) {
+  let borderBottom = last ? "1px solid #1D7BA3" : "none";
   return (
     <Box
       sx={{
         color: "#344072",
-        marginBottom: ".5rem",
+        padding: ".5rem",
         width: "95%",
+        borderTop: "1px solid #1D7BA3",
+        borderLeft: "1px solid #1D7BA3",
+        borderRight: "1px solid #1D7BA3",
+        borderBottom: borderBottom,
         "@media(min-width: 768px)": {
           width: "70%",
         },
@@ -51,7 +55,7 @@ function PostcodeCard({ suburbs, postcode, all, day, week }) {
           {day}
         </Grid>
       </Grid>
-      <Divider light />
+      {/* <Divider light /> */}
     </Box>
   );
 }

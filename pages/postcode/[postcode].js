@@ -85,43 +85,19 @@ async function getClosePostcodes(postcode) {
   return result;
 }
 
-export default function Home() {
-  const [all, setAll] = useState(false);
-  const [postcodeAll, setPostcodeAll] = useState([]);
-  const [postcodeDetails, setPostCodeDetails] = useState({});
-  const [latest, setLatest] = useState("");
-  const [valid, setValid] = useState(true);
-  const [closePostcodeDetails, setClosePostcodeDetails] = useState([]);
-  // get if the post code is valid or not, if not display a page that it can't be found
-
-  useEffect(() => {
-    async function getPostcode() {
-      const postcode = window.location.href.split("/").pop();
-      let validPostcodes = range(2000, 2999).map((item) => item);
-      if (!validPostcodes.includes(Number(postcode))) {
-        setValid(false);
-        return;
-      }
-      let all = await getPostCodeData(postcode);
-      if (all.length == 0) {
-        setValid(false);
-        return;
-      }
-      setPostcodeAll(all);
-      let latest = getLatest(all);
-      setLatest(latest.toString().split(" ").slice(1, 4).join(" "));
-      let details = getPostcodeDetails(postcode, all);
-      setPostCodeDetails(details);
-      let closePostcodesFound = await getClosePostcodes(postcode);
-      setClosePostcodeDetails(closePostcodesFound);
-    }
-    getPostcode();
-  }, []);
+export default function Home({
+  postcodeDetails,
+  latest,
+  closePostcodeDetails,
+  postcodeAll,
+  valid,
+  all,
+}) {
   return (
     <>
       <SearchAppBar sx={{ width: "100%", margin: 0 }} />
       {latest && <Latest latest={latest} />}
-      {postcodeDetails.all && valid && (
+      {postcodeDetails && (
         <Box
           sx={{
             paddingLeft: "1rem",
@@ -143,7 +119,7 @@ export default function Home() {
           />
         </Box>
       )}
-      {postcodeDetails.all && closePostcodeDetails && valid && (
+      {postcodeDetails && closePostcodeDetails && (
         <Box
           sx={{
             paddingLeft: "1rem",
@@ -178,10 +154,9 @@ export default function Home() {
           flexDirection: "column",
         }}
       >
-        {postcodeDetails.all &&
+        {postcodeDetails &&
           closePostcodeDetails &&
-          valid &&
-          closePostcodeDetails.map((item) => {
+          closePostcodeDetails.map((item, index) => {
             return (
               <PostcodeCard
                 key={item.postcode}
@@ -190,6 +165,7 @@ export default function Home() {
                 all={item.all}
                 day={item.day}
                 week={item.week}
+                last={index == closePostcodeDetails.length - 1}
               />
             );
           })}
@@ -207,29 +183,85 @@ const fetchRetry = async (url, n) => {
   }
 };
 
-// export async function getStaticProps() {
-//   let data = await GetSiteData()
-//   let postcodes = data.postcodes
-//   let latest = data.latest
+export async function getStaticPaths() {
+  return {
+    paths: [
+      { params: { postcode: "allnsw" } },
+      { params: { postcode: "2219" } },
+      { params: { postcode: "2218" } },
+    ],
+    fallback: true,
+  };
+}
 
-//   return {
-//     props: {
-//       postcodes,
-//       latest,
-//     },
-//   };
-// }
-
-// export async function getStaticPaths() {
-//     let postcodes = range(2000, 2999)
-//     let paths = postcodes.map((item) => {
-//         return { params: { postcode: String(item) } }
-//     })
-//   return {
-//     paths: [],
-//     fallback: true // false or 'blocking'
-//   };
-// }
+export async function getStaticProps({ params }) {
+  console.log("getting static props");
+  let postcode = params.postcode;
+  let valid = true;
+  let all = false;
+  if (postcode == "allnsw") {
+    //TODO
+  }
+  let postcodeAll = await getPostCodeData(params.postcode);
+  let latest = getLatest(postcodeAll)
+    .toString()
+    .split(" ")
+    .slice(1, 4)
+    .join(" ");
+  let postcodeDetails = getPostcodeDetails(postcode, postcodeAll);
+  let closePostcodeDetails = await getClosePostcodes(postcode);
+  console.log("postcodedetails");
+  console.log(postcodeDetails);
+  postcodeAll = postcodeAll.map((item) => {
+    return {
+      postcode: item.postcode,
+      confirmed_cases_count: item.confirmed_cases_count,
+      notification_date: item.notification_date.toString(),
+    };
+  });
+  return {
+    props: {
+      postcodeDetails,
+      latest,
+      closePostcodeDetails,
+      postcodeAll,
+      valid,
+      all,
+    },
+    revalidate: 900,
+  };
+  //   } else {
+  //     let postcodeAll = await getPostCodeData(postcode);
+  //     let latest = getLatest(postcodeAll)
+  //       .toString()
+  //       .split(" ")
+  //       .slice(1, 4)
+  //       .join(" ");
+  //     let postcodeDetails = getPostcodeDetails(postcode, postcodeAll);
+  //     let closePostcodeDetails = await getClosePostcodes(postcode);
+  //     console.log(postcodeDetails);
+  //     console.log(postcodeAll);
+  //     postcodeAll = postcodeAll.map((item) => {
+  //       return {
+  //         postcode: item.postcode,
+  //         confirmed_cases_count: item.confirmed_cases_count,
+  //         notification_date: item.notification_date.toString(),
+  //       };
+  //     });
+  //     return {
+  //       props: {
+  //         postcode,
+  //         postcodeDetails,
+  //         latest,
+  //         closePostcodeDetails,
+  //         postcodeAll,
+  //       },
+  //     };
+  //  }
+  //   let data = await GetSiteData()
+  //   let postcodes = data.postcodes
+  //   let latest = data.latest
+}
 
 function range(start, end) {
   var ans = [];

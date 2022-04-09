@@ -9,7 +9,8 @@ import Box from "@mui/material/Box";
 import { GetSiteData } from "../modules/FetchData";
 import Latest from "./components/Latest";
 
-export default function Home({ postcodes, latest }) {
+export default function Home({ postcodes, latest, all }) {
+  console.log(all);
   return (
     <div>
       <Head>
@@ -34,7 +35,7 @@ export default function Home({ postcodes, latest }) {
       >
         <PostcodeCardHeading />
         {latest &&
-          postcodes.map((item) => {
+          postcodes.map((item, index) => {
             return (
               <PostcodeCard
                 key={item.postcode}
@@ -43,6 +44,7 @@ export default function Home({ postcodes, latest }) {
                 all={item.all}
                 day={item.day}
                 week={item.week}
+                last={index == postcodes.length - 1}
               />
             );
           })}
@@ -73,11 +75,14 @@ export async function getStaticProps() {
   let data = await GetSiteData();
   let postcodes = data.postcodes;
   let latest = data.latest;
+  let all = data.all;
 
   return {
     props: {
       postcodes,
       latest,
-    }
+      all,
+    },
+    revalidate: 900,
   };
 }
