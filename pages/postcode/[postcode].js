@@ -85,21 +85,38 @@ async function getClosePostcodes(postcode) {
   return result;
 }
 
-export default function Home({
-  postcodeDetails,
-  latest,
-  // closePostcodeDetails,
-  postcodeAll,
-  valid,
-  all,
-}) {
-  const [closePostcodeDetails, setClosePostcodeDetails] = useState(false);
+export default function Home() {
+  const [all, setAll] = useState(false);
+  const [postcodeAll, setPostcodeAll] = useState([]);
+  const [postcodeDetails, setPostCodeDetails] = useState({});
+  const [latest, setLatest] = useState("");
+  const [valid, setValid] = useState(true);
+  const [closePostcodeDetails, setClosePostcodeDetails] = useState([]);
+  // get if the post code is valid or not, if not display a page that it can't be found
 
-  async function updateClosePostcodes() {
-    let details = await getClosePostcodes(postcodeDetails.postcode);
-    setClosePostcodeDetails(details);
-  }
-  updateClosePostcodes();
+  useEffect(() => {
+    async function getPostcode() {
+      const postcode = window.location.href.split("/").pop();
+      let validPostcodes = range(2000, 2999).map((item) => item);
+      if (!validPostcodes.includes(Number(postcode))) {
+        setValid(false);
+        return;
+      }
+      let all = await getPostCodeData(postcode);
+      if (all.length == 0) {
+        setValid(false);
+        return;
+      }
+      setPostcodeAll(all);
+      let latest = getLatest(all);
+      setLatest(latest.toString().split(" ").slice(1, 4).join(" "));
+      let details = getPostcodeDetails(postcode, all);
+      setPostCodeDetails(details);
+      let closePostcodesFound = await getClosePostcodes(postcode);
+      setClosePostcodeDetails(closePostcodesFound);
+    }
+    getPostcode();
+  }, []);
 
   return (
     <>
@@ -203,9 +220,6 @@ export async function getStaticProps({ params }) {
   let postcode = params.postcode;
   let valid = true;
   let all = false;
-  if (postcode == "allnsw") {
-    //TODO
-  }
   let postcodeAll = await getPostCodeData(params.postcode);
   let latest = getLatest(postcodeAll)
     .toString()

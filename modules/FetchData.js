@@ -111,6 +111,17 @@ export async function GetSiteData() {
   };
 }
 
+export async function GetAllData() {
+  let all = await getAll();
+  let summary = getPostcode("All NSW", all);
+  let latest = getLatest(all).toString().split(" ").slice(1, 4).join(" ");
+  return {
+    all: all,
+    summary: summary,
+    latest: latest,
+  };
+}
+
 let postcodeNames = [
   {
     postcode: "2000",

@@ -85,7 +85,7 @@ function PostcodePageNumbers({ all, week, day }) {
             fontSize: "2rem",
           }}
         >
-          {all}
+          {all.toLocaleString("en-AU")}
         </Grid>
         <Grid
           item
@@ -97,7 +97,7 @@ function PostcodePageNumbers({ all, week, day }) {
             fontSize: "2rem",
           }}
         >
-          {week}
+          {week.toLocaleString("en-AU")}
         </Grid>
         <Grid
           item
@@ -109,7 +109,7 @@ function PostcodePageNumbers({ all, week, day }) {
             fontSize: "2rem",
           }}
         >
-          {day}
+          {day.toLocaleString("en-AU")}
         </Grid>
       </Grid>
     </Box>

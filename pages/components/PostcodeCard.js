@@ -29,13 +29,7 @@ function PostcodeCard({ suburbs, postcode, all, day, week, last }) {
         sx={{ paddingBottom: "0.5rem" }}
       >
         <Grid item xs={6}>
-          <a
-            href={
-              postcode == "All NSW"
-                ? `/postcode/allnsw`
-                : `/postcode/${postcode}`
-            }
-          >
+          <a href={postcode == "All NSW" ? `/allnsw` : `/postcode/${postcode}`}>
             <Grid
               item
               xs={12}

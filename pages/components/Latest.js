@@ -31,15 +31,18 @@ function Latest({ latest }) {
         <Box
           sx={{
             fontSize: "0.6rem",
-            marginBottom: "3rem",
+            marginBottom: "1.5rem",
             textAlign: "center",
           }}
         >
-          The data on this site is gathered from NSW Data. It is not associated
-          with NSW Health. This is displayed for interest purposes only and
-          should not replace current health advice. The numbers displayed are
-          confirmed cases only and may not reflect the current infection rate in
-          your area.
+          The data on this site is gathered from{" "}
+          <a href={"https://data.nsw.gov.au/nsw-covid-19-data"} target="_">
+            NSW Data
+          </a>
+          . It is not associated with NSW Health. This is displayed for interest
+          purposes only and should not replace current health advice. The
+          numbers displayed are confirmed cases only and may not reflect the
+          current infection rate in your area.
         </Box>
       </Box>
     </div>

@@ -37,7 +37,7 @@ function PostcodePageHeading({ postcode, suburbs }) {
         <Box
           sx={{
             color: "#8086a0",
-            fontSize: "1.5rem",
+            fontSize: "1rem",
           }}
         >
           {suburbs && suburbs.join(", ")}
