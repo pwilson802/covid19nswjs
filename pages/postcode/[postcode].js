@@ -88,11 +88,19 @@ async function getClosePostcodes(postcode) {
 export default function Home({
   postcodeDetails,
   latest,
-  closePostcodeDetails,
+  // closePostcodeDetails,
   postcodeAll,
   valid,
   all,
 }) {
+  const [closePostcodeDetails, setClosePostcodeDetails] = useState(false);
+
+  async function updateClosePostcodes() {
+    let details = await getClosePostcodes(postcodeDetails.postcode);
+    setClosePostcodeDetails(details);
+  }
+  updateClosePostcodes();
+
   return (
     <>
       <SearchAppBar sx={{ width: "100%", margin: 0 }} />
@@ -209,9 +217,7 @@ export async function getStaticProps({ params }) {
     .slice(1, 4)
     .join(" ");
   let postcodeDetails = getPostcodeDetails(postcode, postcodeAll);
-  let closePostcodeDetails = await getClosePostcodes(postcode);
-  console.log("postcodedetails");
-  console.log(postcodeDetails);
+  // let closePostcodeDetails = await getClosePostcodes(postcode);
   postcodeAll = postcodeAll.map((item) => {
     return {
       postcode: item.postcode,
@@ -223,7 +229,7 @@ export async function getStaticProps({ params }) {
     props: {
       postcodeDetails,
       latest,
-      closePostcodeDetails,
+      // closePostcodeDetails,
       postcodeAll,
       valid,
       all,

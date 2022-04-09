@@ -4,6 +4,8 @@ import Divider from "@mui/material/Divider";
 
 function PostcodeCard({ suburbs, postcode, all, day, week, last }) {
   let borderBottom = last ? "1px solid #1D7BA3" : "none";
+  let backgroundColor =
+    postcode == "All NSW" ? "rgba(219, 127, 116, 0.1)" : "none";
   return (
     <Box
       sx={{
@@ -13,6 +15,7 @@ function PostcodeCard({ suburbs, postcode, all, day, week, last }) {
         borderTop: "1px solid #1D7BA3",
         borderLeft: "1px solid #1D7BA3",
         borderRight: "1px solid #1D7BA3",
+        backgroundColor: backgroundColor,
         borderBottom: borderBottom,
         "@media(min-width: 768px)": {
           width: "70%",
@@ -26,33 +29,39 @@ function PostcodeCard({ suburbs, postcode, all, day, week, last }) {
         sx={{ paddingBottom: "0.5rem" }}
       >
         <Grid item xs={6}>
-          <a href={`/postcode/${postcode}`}>
+          <a
+            href={
+              postcode == "All NSW"
+                ? `/postcode/allnsw`
+                : `/postcode/${postcode}`
+            }
+          >
             <Grid
               item
               xs={12}
               sx={{
                 width: "70%",
-                color: "#344072",
+                color: "#4C6570",
                 fontWeight: "bold",
                 fontSize: "1.5rem",
               }}
             >
               {postcode}
             </Grid>
-            <Grid item xs={12} sx={{ fontColor: "#8086a0" }}>
+            <Grid item xs={12} sx={{ color: "#4C6570", fontSize: "0.9rem" }}>
               {suburbs && suburbs.join(", ")}
             </Grid>
           </a>
         </Grid>
 
         <Grid item xs={2}>
-          {all}
+          {all.toLocaleString("en-AU")}
         </Grid>
         <Grid item xs={2}>
-          {week}
+          {week.toLocaleString("en-AU")}
         </Grid>
         <Grid item xs={2}>
-          {day}
+          {day.toLocaleString("en-AU")}
         </Grid>
       </Grid>
       {/* <Divider light /> */}

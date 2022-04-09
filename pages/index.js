@@ -10,7 +10,6 @@ import { GetSiteData } from "../modules/FetchData";
 import Latest from "./components/Latest";
 
 export default function Home({ postcodes, latest, all }) {
-  console.log(all);
   return (
     <div>
       <Head>
