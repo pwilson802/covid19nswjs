@@ -193,11 +193,7 @@ const fetchRetry = async (url, n) => {
 
 export async function getStaticPaths() {
   return {
-    paths: [
-      // { params: { postcode: "allnsw" } },
-      { params: { postcode: "2219" } },
-      { params: { postcode: "2218" } },
-    ],
+    paths: [],
     fallback: true,
   };
 }
