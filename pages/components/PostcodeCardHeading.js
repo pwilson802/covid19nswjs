@@ -1,9 +1,8 @@
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
-import { fontWeight } from "@mui/system";
 
-function PostcodeCardHeading({ sortpostcodeList }) {
+function PostcodeCardHeading({ sortpostcodeList, sortedBy }) {
   return (
     <Box
       sx={{
@@ -31,17 +30,52 @@ function PostcodeCardHeading({ sortpostcodeList }) {
         <Grid item xs={6}>
           Location
         </Grid>
-        <Grid item xs={2} onClick={() => sortpostcodeList("all")}>
+        <Grid
+          item
+          xs={2}
+          onClick={() => sortpostcodeList("all")}
+          sx={
+            sortedBy == "all"
+              ? {
+                  textDecoration: "underline",
+                  textUnderlineOffset: "0.4rem",
+                }
+              : { cursor: "pointer" }
+          }
+        >
           All
         </Grid>
-        <Grid item xs={2} onClick={() => sortpostcodeList("week")}>
+        <Grid
+          item
+          xs={2}
+          onClick={() => sortpostcodeList("week")}
+          sx={
+            sortedBy == "week"
+              ? {
+                  textDecoration: "underline",
+                  textUnderlineOffset: "0.4rem",
+                }
+              : { cursor: "pointer" }
+          }
+        >
           Week
         </Grid>
-        <Grid item xs={2} onClick={() => sortpostcodeList("day")}>
+        <Grid
+          item
+          xs={2}
+          onClick={() => sortpostcodeList("day")}
+          sx={
+            sortedBy == "day"
+              ? {
+                  textDecoration: "underline",
+                  textUnderlineOffset: "0.4rem",
+                }
+              : { cursor: "pointer" }
+          }
+        >
           Last Day
         </Grid>
       </Grid>
-      {/* <Divider /> */}
     </Box>
   );
 }
