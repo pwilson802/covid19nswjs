@@ -10,6 +10,9 @@ import { GetSiteData } from "../modules/FetchData";
 import Latest from "./components/Latest";
 
 export default function Home({ postcodes, latest, all }) {
+  const [postcodeList, setPostcodeList] = useState(postcodes);
+  // const [sortBy, setSortyBy] = useState("day");
+
   return (
     <div>
       <Head>
@@ -34,7 +37,7 @@ export default function Home({ postcodes, latest, all }) {
       >
         <PostcodeCardHeading />
         {latest &&
-          postcodes.map((item, index) => {
+          postcodeList.map((item, index) => {
             return (
               <PostcodeCard
                 key={item.postcode}
@@ -43,7 +46,7 @@ export default function Home({ postcodes, latest, all }) {
                 all={item.all}
                 day={item.day}
                 week={item.week}
-                last={index == postcodes.length - 1}
+                last={index == postcodeList.length - 1}
               />
             );
           })}
