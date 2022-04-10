@@ -11,7 +11,16 @@ import Latest from "./components/Latest";
 
 export default function Home({ postcodes, latest, all }) {
   const [postcodeList, setPostcodeList] = useState(postcodes);
+  const [sortedBy, setSortedBy] = useState("day");
   // const [sortBy, setSortyBy] = useState("day");
+
+  function sortpostcodeList(column) {
+    let newList = postcodeList.sort((a, b) => (a[column] < b[column] ? 1 : -1));
+    setSortedBy(column);
+    console.log(newList);
+    setPostcodeList(newList);
+  }
+  console.log("re-rendering");
 
   return (
     <div>
@@ -35,7 +44,7 @@ export default function Home({ postcodes, latest, all }) {
           flexDirection: "column",
         }}
       >
-        <PostcodeCardHeading />
+        <PostcodeCardHeading sortpostcodeList={sortpostcodeList} />
         {latest &&
           postcodeList.map((item, index) => {
             return (

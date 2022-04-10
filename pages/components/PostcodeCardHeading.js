@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import { fontWeight } from "@mui/system";
 
-function PostcodeCardHeading() {
+function PostcodeCardHeading({ sortpostcodeList }) {
   return (
     <Box
       sx={{
@@ -31,13 +31,13 @@ function PostcodeCardHeading() {
         <Grid item xs={6}>
           Location
         </Grid>
-        <Grid item xs={2}>
+        <Grid item xs={2} onClick={() => sortpostcodeList("all")}>
           All
         </Grid>
-        <Grid item xs={2}>
+        <Grid item xs={2} onClick={() => sortpostcodeList("week")}>
           Week
         </Grid>
-        <Grid item xs={2}>
+        <Grid item xs={2} onClick={() => sortpostcodeList("day")}>
           Last Day
         </Grid>
       </Grid>
