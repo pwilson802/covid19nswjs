@@ -73,7 +73,7 @@ function PostcodeCardHeading({ sortpostcodeList, sortedBy }) {
               : { cursor: "pointer" }
           }
         >
-          Last Day
+          Day
         </Grid>
       </Grid>
     </Box>

@@ -86,12 +86,21 @@ async function getClosePostcodes(postcode) {
 }
 
 export default function Home() {
-  const [all, setAll] = useState(false);
   const [postcodeAll, setPostcodeAll] = useState([]);
   const [postcodeDetails, setPostCodeDetails] = useState({});
   const [latest, setLatest] = useState("");
   const [valid, setValid] = useState(true);
   const [closePostcodeDetails, setClosePostcodeDetails] = useState([]);
+  const [sortedBy, setSortedBy] = useState("day");
+  // const [sortBy, setSortyBy] = useState("day");
+
+  function sortpostcodeList(column) {
+    let newList = closePostcodeDetails.sort((a, b) =>
+      a[column] < b[column] ? 1 : -1
+    );
+    setSortedBy(column);
+    setClosePostcodeDetails(newList);
+  }
   // get if the post code is valid or not, if not display a page that it can't be found
 
   useEffect(() => {
@@ -166,7 +175,10 @@ export default function Home() {
           >
             Close Suburbs{" "}
           </Box>
-          <PostcodeCardHeading />
+          <PostcodeCardHeading
+            sortpostcodeList={sortpostcodeList}
+            sortedBy={sortedBy}
+          />
         </Box>
       )}
       <Box
