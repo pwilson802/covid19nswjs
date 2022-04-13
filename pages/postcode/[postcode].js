@@ -3,6 +3,7 @@ import PostcodeCard from "../components/PostcodeCard";
 import PostcodeCardHeading from "../components/PostcodeCardHeading";
 import PostcodePageHeading from "../components/PostcodePageHeading";
 import PostcodePageNumbers from "../components/PostcodePageNumbers";
+import Charts from "../components/charts/Charts";
 import { GetSiteData } from "../../modules/FetchData";
 import { useRouter } from "next/router";
 import Latest from "../components/Latest";
@@ -86,13 +87,13 @@ async function getClosePostcodes(postcode) {
 }
 
 export default function Home() {
-  const [all, setAll] = useState(false);
   const [postcodeAll, setPostcodeAll] = useState([]);
   const [postcodeDetails, setPostCodeDetails] = useState({});
   const [latest, setLatest] = useState("");
   const [valid, setValid] = useState(true);
   const [closePostcodeDetails, setClosePostcodeDetails] = useState([]);
   // get if the post code is valid or not, if not display a page that it can't be found
+  console.log(postcodeAll);
 
   useEffect(() => {
     async function getPostcode() {
@@ -144,6 +145,7 @@ export default function Home() {
           />
         </Box>
       )}
+      <Charts data={postcodeAll} />
       {postcodeDetails && closePostcodeDetails && (
         <Box
           sx={{
