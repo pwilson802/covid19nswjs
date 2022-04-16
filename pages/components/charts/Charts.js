@@ -11,6 +11,8 @@ import {
 import { Bar } from "react-chartjs-2";
 import Box from "@mui/material/Box";
 import "chartjs-adapter-date-fns";
+import { useEffect, useState } from "react";
+import { setDate } from "date-fns";
 
 ChartJS.register(
   CategoryScale,
@@ -22,20 +24,7 @@ ChartJS.register(
   TimeScale
 );
 
-// export const fakeData = {
-//   labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-//   datasets: [
-//     {
-//       label: "# Cases",
-//       data: [12, 19, 3, 5, 2, 3],
-//       backgroundColor: ["rgba(255, 99, 132, 0.2)"],
-//       borderColor: ["rgba(255, 99, 132, 1)"],
-//       borderWidth: 1,
-//     },
-//   ],
-// };
-
-function makeData(data) {
+function makeData(data, startDate, endDate) {
   const dates = Array.from(
     new Set(data.map((item) => item.notification_date.getTime()))
   );
@@ -60,11 +49,19 @@ function makeData(data) {
   };
 }
 
+function makeFirstDates(data) {
+  return data[0];
+}
+
 function Charts({ data }) {
-  const chartData = makeData(data);
-  console.log(chartData);
+  const [endDate] = useState(data[0].notification_date.getTime());
+  const [startDate] = useState(data[30].notification_date.getTime());
+  const [loaded, setLoaded] = useState(false);
+
+  const chartData = makeData(data, endDate, startDate);
+  // console.log(chartData);
   return (
-    <Box sx={{ margin: "0 20%" }}>
+    <Box sx={{ margin: "0 30%" }}>
       <Bar
         data={{
           datasets: [chartData],
