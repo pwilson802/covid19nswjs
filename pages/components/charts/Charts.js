@@ -51,8 +51,8 @@ function makeData(data, startDate, endDate) {
 
 function Charts({ data }) {
   const [value, setValue] = useState([
-    data[0].notification_date.getTime(),
-    data[90].notification_date.getTime(),
+    data[0].notification_date.getTime() || 0,
+    data[90].notification_date.getTime() || 0,
   ]);
   // const [loaded, setLoaded] = useState(false);
   //const [marks, setMarks] = useState([]);
