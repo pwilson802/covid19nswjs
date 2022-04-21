@@ -3,6 +3,7 @@ import PostcodeCard from "../components/PostcodeCard";
 import PostcodeCardHeading from "../components/PostcodeCardHeading";
 import PostcodePageHeading from "../components/PostcodePageHeading";
 import PostcodePageNumbers from "../components/PostcodePageNumbers";
+import Charts from "../components/charts/Charts";
 import { GetSiteData, GetAllData } from "../../modules/FetchData";
 import { useRouter } from "next/router";
 import Latest from "../components/Latest";
@@ -12,6 +13,13 @@ import Grid from "@mui/material/Grid";
 import Divider from "@mui/material/Divider";
 
 export default function Home({ all, summary, latest }) {
+  let allData = all.map((item) => {
+    return {
+      postcode: item.postcode,
+      confirmed_cases_count: item.confirmed_cases_count,
+      notification_date: new Date(item.notification_date),
+    };
+  });
   return (
     <>
       <SearchAppBar sx={{ width: "100%", margin: 0 }} />
@@ -47,6 +55,7 @@ export default function Home({ all, summary, latest }) {
           />
         </Box>
       )}
+      {summary.all && all[0] && <Charts data={allData} />}
     </>
   );
 }

@@ -12,7 +12,7 @@ import { Bar } from "react-chartjs-2";
 import Box from "@mui/material/Box";
 import "chartjs-adapter-date-fns";
 import { useEffect, useState } from "react";
-import { setDate } from "date-fns";
+import Slider from "@mui/material/Slider";
 
 ChartJS.register(
   CategoryScale,
@@ -27,7 +27,7 @@ ChartJS.register(
 function makeData(data, startDate, endDate) {
   const dates = Array.from(
     new Set(data.map((item) => item.notification_date.getTime()))
-  );
+  ).filter((item) => item <= startDate && item >= endDate);
   const newData = dates.map((item) => {
     // let date = item;
     let count = data
@@ -49,39 +49,73 @@ function makeData(data, startDate, endDate) {
   };
 }
 
-function makeFirstDates(data) {
-  return data[0];
-}
-
 function Charts({ data }) {
-  const [endDate] = useState(data[0].notification_date.getTime());
-  const [startDate] = useState(data[30].notification_date.getTime());
-  const [loaded, setLoaded] = useState(false);
+  const [value, setValue] = useState([
+    data[0].notification_date.getTime(),
+    data[90].notification_date.getTime(),
+  ]);
+  // const [loaded, setLoaded] = useState(false);
+  //const [marks, setMarks] = useState([]);
 
-  const chartData = makeData(data, endDate, startDate);
-  // console.log(chartData);
+  const handleChange = (event, newValue) => {
+    console.log("newValue", newValue);
+    setValue([newValue[1], newValue[0]]);
+  };
+
+  function valuetext(value) {
+    return new Date(value).toLocaleDateString();
+  }
+
+  const chartData = makeData(data, value[0], value[1]);
   return (
-    <Box sx={{ margin: "0 30%" }}>
-      <Bar
-        data={{
-          datasets: [chartData],
-        }}
-        options={{
-          scales: {
-            x: {
-              type: "time",
-              time: {
-                unit: "day",
-                tooltipFormat: "MMM d yy",
-              },
-            },
-            y: {
-              beginAtZero: true,
-            },
+    <div>
+      <Box
+        sx={{
+          margin: "0 5%",
+          "@media(min-width: 768px)": {
+            margin: "0 10%",
           },
         }}
-      />
-    </Box>
+      >
+        <div style={{ height: "250px" }}>
+          <Bar
+            data={{
+              datasets: [chartData],
+            }}
+            options={{
+              scales: {
+                x: {
+                  type: "time",
+                  time: {
+                    unit: "day",
+                    tooltipFormat: "MMM d yy",
+                  },
+                },
+                y: {
+                  beginAtZero: true,
+                },
+              },
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  display: false,
+                },
+              },
+            }}
+          />
+        </div>
+        <Slider
+          onChange={handleChange}
+          value={value}
+          step={86400000}
+          valueLabelDisplay="auto"
+          valueLabelFormat={valuetext}
+          // getAriaLabel={valuetext}
+          max={data[0].notification_date.getTime()}
+          min={data[data.length - 1].notification_date.getTime()}
+        />
+      </Box>
+    </div>
   );
 }
 

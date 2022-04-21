@@ -145,7 +145,7 @@ export default function Home() {
           />
         </Box>
       )}
-      <Charts data={postcodeAll} />
+      {postcodeAll[0] && <Charts data={postcodeAll} />}
       {postcodeDetails && closePostcodeDetails && (
         <Box
           sx={{
