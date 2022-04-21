@@ -50,12 +50,16 @@ function makeData(data, startDate, endDate) {
 }
 
 function Charts({ data }) {
-  const [value, setValue] = useState([
-    data[0].notification_date.getTime() || 0,
-    data[90].notification_date.getTime() || 0,
-  ]);
-  // const [loaded, setLoaded] = useState(false);
-  //const [marks, setMarks] = useState([]);
+  const [value, setValue] = useState([]);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    setValue([
+      data[0].notification_date.getTime(),
+      data[90].notification_date.getTime(),
+    ]);
+    setLoaded(true);
+  }, [data]);
 
   const handleChange = (event, newValue) => {
     console.log("newValue", newValue);
@@ -69,52 +73,54 @@ function Charts({ data }) {
   const chartData = makeData(data, value[0], value[1]);
   return (
     <div>
-      <Box
-        sx={{
-          margin: "0 5%",
-          "@media(min-width: 768px)": {
-            margin: "0 10%",
-          },
-        }}
-      >
-        <div style={{ height: "250px" }}>
-          <Bar
-            data={{
-              datasets: [chartData],
-            }}
-            options={{
-              scales: {
-                x: {
-                  type: "time",
-                  time: {
-                    unit: "day",
-                    tooltipFormat: "MMM d yy",
+      {loaded && (
+        <Box
+          sx={{
+            margin: "0 5%",
+            "@media(min-width: 768px)": {
+              margin: "0 10%",
+            },
+          }}
+        >
+          <div style={{ height: "250px" }}>
+            <Bar
+              data={{
+                datasets: [chartData],
+              }}
+              options={{
+                scales: {
+                  x: {
+                    type: "time",
+                    time: {
+                      unit: "day",
+                      tooltipFormat: "MMM d yy",
+                    },
+                  },
+                  y: {
+                    beginAtZero: true,
                   },
                 },
-                y: {
-                  beginAtZero: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: {
+                    display: false,
+                  },
                 },
-              },
-              maintainAspectRatio: false,
-              plugins: {
-                legend: {
-                  display: false,
-                },
-              },
-            }}
+              }}
+            />
+          </div>
+          <Slider
+            onChange={handleChange}
+            value={value}
+            step={86400000}
+            valueLabelDisplay="auto"
+            valueLabelFormat={valuetext}
+            // getAriaLabel={valuetext}
+            max={data[0].notification_date.getTime()}
+            min={data[data.length - 1].notification_date.getTime()}
           />
-        </div>
-        <Slider
-          onChange={handleChange}
-          value={value}
-          step={86400000}
-          valueLabelDisplay="auto"
-          valueLabelFormat={valuetext}
-          // getAriaLabel={valuetext}
-          max={data[0].notification_date.getTime()}
-          min={data[data.length - 1].notification_date.getTime()}
-        />
-      </Box>
+        </Box>
+      )}
     </div>
   );
 }
