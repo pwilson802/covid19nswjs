@@ -13,6 +13,7 @@ import Box from "@mui/material/Box";
 import "chartjs-adapter-date-fns";
 import { useEffect, useState } from "react";
 import Slider from "@mui/material/Slider";
+import { SettingsApplicationsRounded } from "@mui/icons-material";
 
 ChartJS.register(
   CategoryScale,
@@ -50,34 +51,26 @@ function makeData(data, startDate, endDate) {
 }
 
 function Charts({ data }) {
-  const [value, setValue] = useState([
-    data[0].notification_date.getTime(),
-    data[90].notification_date.getTime(),
-  ]);
-  // const [loaded, setLoaded] = useState(false);
-  // const [allData, setAllData] = useState(data);
-  const [chartData, setChartData] = useState(
-    makeData(
-      data,
-      data[0].notification_date.getTime(),
-      data[90].notification_date.getTime()
-    )
-  );
+  const [value, setValue] = useState();
+  const [loaded, setLoaded] = useState(false);
+  const [chartData, setChartData] = useState();
 
-  // useEffect(() => {
-  //   console.log(data);
-  //   // setValue([
-  //   //   data[0].notification_date.getTime(),
-  //   //   data[90].notification_date.getTime(),
-  //   // ]);
-  //   let tmpData = makeData(
-  //     data,
-  //     data[0].notification_date.getTime(),
-  //     data[90].notification_date.getTime()
-  //   );
-  //   setChartData(tmpData);
-  //   setLoaded(true);
-  // }, [data]);
+  useEffect(() => {
+    if (data.length) {
+      setValue([
+        data[0].notification_date.getTime(),
+        data[90].notification_date.getTime(),
+      ]);
+      setChartData(
+        makeData(
+          data,
+          data[0].notification_date.getTime(),
+          data[90].notification_date.getTime()
+        )
+      );
+      setLoaded(true);
+    }
+  }, [data]);
 
   const handleChange = (event, newValue) => {
     console.log("newValue", newValue);
@@ -93,52 +86,54 @@ function Charts({ data }) {
   console.log(data);
   return (
     <div>
-      <Box
-        sx={{
-          margin: "0 5%",
-          "@media(min-width: 768px)": {
-            margin: "0 10%",
-          },
-        }}
-      >
-        <div style={{ height: "250px" }}>
-          <Bar
-            data={{
-              datasets: [chartData],
-            }}
-            options={{
-              scales: {
-                x: {
-                  type: "time",
-                  time: {
-                    unit: "day",
-                    tooltipFormat: "MMM d yy",
+      {loaded && (
+        <Box
+          sx={{
+            margin: "0 5%",
+            "@media(min-width: 768px)": {
+              margin: "0 10%",
+            },
+          }}
+        >
+          <div style={{ height: "250px" }}>
+            <Bar
+              data={{
+                datasets: [chartData],
+              }}
+              options={{
+                scales: {
+                  x: {
+                    type: "time",
+                    time: {
+                      unit: "day",
+                      tooltipFormat: "MMM d yy",
+                    },
+                  },
+                  y: {
+                    beginAtZero: true,
                   },
                 },
-                y: {
-                  beginAtZero: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: {
+                    display: false,
+                  },
                 },
-              },
-              maintainAspectRatio: false,
-              plugins: {
-                legend: {
-                  display: false,
-                },
-              },
-            }}
+              }}
+            />
+          </div>
+          <Slider
+            onChange={handleChange}
+            value={value}
+            step={86400000}
+            valueLabelDisplay="auto"
+            valueLabelFormat={valuetext}
+            // getAriaLabel={valuetext}
+            max={data[0].notification_date.getTime()}
+            min={data[data.length - 1].notification_date.getTime()}
           />
-        </div>
-        <Slider
-          onChange={handleChange}
-          value={value}
-          step={86400000}
-          valueLabelDisplay="auto"
-          valueLabelFormat={valuetext}
-          // getAriaLabel={valuetext}
-          max={data[0].notification_date.getTime()}
-          min={data[data.length - 1].notification_date.getTime()}
-        />
-      </Box>
+        </Box>
+      )}
     </div>
   );
 }

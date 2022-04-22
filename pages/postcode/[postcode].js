@@ -283,7 +283,7 @@ const fetchRetry = async (url, n) => {
 //   let latest = data.latest
 // }
 
-export const getServerSideProps = () => {};
+// export const getServerSideProps = () => {};
 
 function range(start, end) {
   var ans = [];
