@@ -50,77 +50,95 @@ function makeData(data, startDate, endDate) {
 }
 
 function Charts({ data }) {
-  const [value, setValue] = useState([]);
-  const [loaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    setValue([
+  const [value, setValue] = useState([
+    data[0].notification_date.getTime(),
+    data[90].notification_date.getTime(),
+  ]);
+  // const [loaded, setLoaded] = useState(false);
+  // const [allData, setAllData] = useState(data);
+  const [chartData, setChartData] = useState(
+    makeData(
+      data,
       data[0].notification_date.getTime(),
-      data[90].notification_date.getTime(),
-    ]);
-    setLoaded(true);
-  }, [data]);
+      data[90].notification_date.getTime()
+    )
+  );
+
+  // useEffect(() => {
+  //   console.log(data);
+  //   // setValue([
+  //   //   data[0].notification_date.getTime(),
+  //   //   data[90].notification_date.getTime(),
+  //   // ]);
+  //   let tmpData = makeData(
+  //     data,
+  //     data[0].notification_date.getTime(),
+  //     data[90].notification_date.getTime()
+  //   );
+  //   setChartData(tmpData);
+  //   setLoaded(true);
+  // }, [data]);
 
   const handleChange = (event, newValue) => {
     console.log("newValue", newValue);
     setValue([newValue[1], newValue[0]]);
+    let tmpData = makeData(data, newValue[1], newValue[0]);
+    setChartData(tmpData);
   };
 
   function valuetext(value) {
     return new Date(value).toLocaleDateString();
   }
 
-  const chartData = makeData(data, value[0], value[1]);
+  console.log(data);
   return (
     <div>
-      {loaded && (
-        <Box
-          sx={{
-            margin: "0 5%",
-            "@media(min-width: 768px)": {
-              margin: "0 10%",
-            },
-          }}
-        >
-          <div style={{ height: "250px" }}>
-            <Bar
-              data={{
-                datasets: [chartData],
-              }}
-              options={{
-                scales: {
-                  x: {
-                    type: "time",
-                    time: {
-                      unit: "day",
-                      tooltipFormat: "MMM d yy",
-                    },
-                  },
-                  y: {
-                    beginAtZero: true,
+      <Box
+        sx={{
+          margin: "0 5%",
+          "@media(min-width: 768px)": {
+            margin: "0 10%",
+          },
+        }}
+      >
+        <div style={{ height: "250px" }}>
+          <Bar
+            data={{
+              datasets: [chartData],
+            }}
+            options={{
+              scales: {
+                x: {
+                  type: "time",
+                  time: {
+                    unit: "day",
+                    tooltipFormat: "MMM d yy",
                   },
                 },
-                maintainAspectRatio: false,
-                plugins: {
-                  legend: {
-                    display: false,
-                  },
+                y: {
+                  beginAtZero: true,
                 },
-              }}
-            />
-          </div>
-          <Slider
-            onChange={handleChange}
-            value={value}
-            step={86400000}
-            valueLabelDisplay="auto"
-            valueLabelFormat={valuetext}
-            // getAriaLabel={valuetext}
-            max={data[0].notification_date.getTime()}
-            min={data[data.length - 1].notification_date.getTime()}
+              },
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  display: false,
+                },
+              },
+            }}
           />
-        </Box>
-      )}
+        </div>
+        <Slider
+          onChange={handleChange}
+          value={value}
+          step={86400000}
+          valueLabelDisplay="auto"
+          valueLabelFormat={valuetext}
+          // getAriaLabel={valuetext}
+          max={data[0].notification_date.getTime()}
+          min={data[data.length - 1].notification_date.getTime()}
+        />
+      </Box>
     </div>
   );
 }
