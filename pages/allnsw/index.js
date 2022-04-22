@@ -3,7 +3,7 @@ import PostcodeCard from "../components/PostcodeCard";
 import PostcodeCardHeading from "../components/PostcodeCardHeading";
 import PostcodePageHeading from "../components/PostcodePageHeading";
 import PostcodePageNumbers from "../components/PostcodePageNumbers";
-// import Charts from "../components/charts/Charts";
+import Charts from "../components/charts/Charts";
 import { GetSiteData, GetAllData } from "../../modules/FetchData";
 import { useRouter } from "next/router";
 import Latest from "../components/Latest";
@@ -55,7 +55,7 @@ export default function Home({ all, summary, latest }) {
           />
         </Box>
       )}
-      {/* {summary.all && all[0] && <Charts data={allData} />} */}
+      {summary.all && all[0] && <Charts data={allData} all={true} />}
     </>
   );
 }

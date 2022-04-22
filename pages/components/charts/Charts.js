@@ -50,22 +50,23 @@ function makeData(data, startDate, endDate) {
   };
 }
 
-function Charts({ data }) {
+function Charts({ data, all }) {
   const [value, setValue] = useState();
   const [loaded, setLoaded] = useState(false);
   const [chartData, setChartData] = useState();
 
   useEffect(() => {
     if (data.length) {
+      let endDay = all ? 36000 : 70;
       setValue([
         data[0].notification_date.getTime(),
-        data[90].notification_date.getTime(),
+        data[endDay].notification_date.getTime(),
       ]);
       setChartData(
         makeData(
           data,
           data[0].notification_date.getTime(),
-          data[90].notification_date.getTime()
+          data[endDay].notification_date.getTime()
         )
       );
       setLoaded(true);
@@ -73,7 +74,6 @@ function Charts({ data }) {
   }, [data]);
 
   const handleChange = (event, newValue) => {
-    console.log("newValue", newValue);
     setValue([newValue[1], newValue[0]]);
     let tmpData = makeData(data, newValue[1], newValue[0]);
     setChartData(tmpData);
@@ -83,7 +83,6 @@ function Charts({ data }) {
     return new Date(value).toLocaleDateString();
   }
 
-  console.log(data);
   return (
     <div>
       {loaded && (

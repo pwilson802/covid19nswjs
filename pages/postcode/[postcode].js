@@ -120,7 +120,6 @@ export default function Home() {
     getPostcode();
   }, []);
 
-  console.log(postcodeAll);
   return (
     <>
       <SearchAppBar sx={{ width: "100%", margin: 0 }} />
@@ -147,7 +146,7 @@ export default function Home() {
           />
         </Box>
       )}
-      {loaded && <Charts data={postcodeAll} />}
+      {loaded && <Charts data={postcodeAll} all={false} />}
       {postcodeDetails && closePostcodeDetails && (
         <Box
           sx={{
