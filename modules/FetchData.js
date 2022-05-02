@@ -19,15 +19,33 @@ function getYears() {
 }
 
 async function getAll() {
+  const months = [
+    "01",
+    "02",
+    "03",
+    "04",
+    "05",
+    "06",
+    "07",
+    "08",
+    "09",
+    "10",
+    "11",
+    "12",
+  ];
   let allCases = [];
   const years = getYears();
   for (let year of years) {
-    let url = `https://data.nsw.gov.au/data/api/3/action/datastore_search_sql?sql=SELECT postcode, notification_date, confirmed_cases_count from "5d63b527-e2b8-4c42-ad6f-677f14433520" WHERE notification_date>='${year}-01-01' AND notification_date<='${year}-12-31'`;
-    let response = await fetchRetry(url, 3);
-    let json = await response.json();
-    let data = json.result.records;
-    allCases = [...allCases, ...data];
+    for (let month of months) {
+      let url = `https://data.nsw.gov.au/data/api/3/action/datastore_search_sql?sql=SELECT postcode, notification_date, confirmed_cases_count from "5d63b527-e2b8-4c42-ad6f-677f14433520" WHERE notification_date LIKE '${year}-${month}-%'`;
+      let response = await fetchRetry(url, 3);
+      let json = await response.json();
+      let data = json.result.records;
+      allCases = [...allCases, ...data];
+    }
+    //let url = `https://data.nsw.gov.au/data/api/3/action/datastore_search_sql?sql=SELECT postcode, notification_date, confirmed_cases_count from "5d63b527-e2b8-4c42-ad6f-677f14433520" WHERE notification_date>='${year}-01-01' AND notification_date<='${year}-12-31'`;
   }
+  console.log(allCases);
   let allCasesDates = allCases.map((item) => {
     item.notification_date = new Date(item.notification_date);
     return item;
@@ -78,7 +96,7 @@ function getAllPostcodes(data) {
   let postcodesAll = postcodeNames.map((item) => item.postcode);
   let postcodes = Array.from(new Set(postcodesAll));
   // Filter to remove a lot of postcodes for testingg
-  // postcodes = postcodes.slice(100,150)
+  // postcodes = postcodes.slice(100, 150);
   let result = postcodes.map((postcode) => {
     return getPostcode(postcode, data);
   });
@@ -115,6 +133,9 @@ export async function GetAllData() {
   let all = await getAll();
   let summary = getPostcode("All NSW", all);
   let latest = getLatest(all).toString().split(" ").slice(1, 4).join(" ");
+  // console.log(all);
+  // console.log("**********LATEST");
+  // console.log(latest);
   return {
     all: all,
     summary: summary,
