@@ -45,7 +45,6 @@ async function getAll() {
     }
     //let url = `https://data.nsw.gov.au/data/api/3/action/datastore_search_sql?sql=SELECT postcode, notification_date, confirmed_cases_count from "5d63b527-e2b8-4c42-ad6f-677f14433520" WHERE notification_date>='${year}-01-01' AND notification_date<='${year}-12-31'`;
   }
-  console.log(allCases);
   let allCasesDates = allCases.map((item) => {
     item.notification_date = new Date(item.notification_date);
     return item;

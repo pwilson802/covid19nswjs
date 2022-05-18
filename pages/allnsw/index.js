@@ -15,9 +15,9 @@ import Divider from "@mui/material/Divider";
 export default function Home({ all, summary, latest }) {
   let allData = all.map((item) => {
     return {
-      postcode: item.postcode,
-      confirmed_cases_count: item.confirmed_cases_count,
-      notification_date: new Date(item.notification_date),
+      postcode: item.p,
+      confirmed_cases_count: item.c,
+      notification_date: new Date(item.n),
     };
   });
   return (
@@ -77,9 +77,9 @@ export async function getStaticProps() {
   let latest = allData.latest;
   all = all.map((item) => {
     return {
-      postcode: item.postcode,
-      confirmed_cases_count: item.confirmed_cases_count,
-      notification_date: item.notification_date.toString(),
+      p: item.postcode,
+      c: item.confirmed_cases_count,
+      n: item.notification_date.toString(),
     };
   });
   return {
