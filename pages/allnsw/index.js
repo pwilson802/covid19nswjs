@@ -79,9 +79,11 @@ export async function getStaticProps() {
     return {
       p: item.postcode,
       c: item.confirmed_cases_count,
-      n: item.notification_date.toString(),
+      // n: item.notification_date.toString(),
+      n: item.notification_date.toLocaleDateString('en-US'),
     };
   });
+  console.log(all.length)
   return {
     props: {
       all,
